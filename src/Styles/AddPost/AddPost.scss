@@ -1,0 +1,55 @@
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.5;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.formAdd {
+  width: 655px;
+  height: 370px;
+  background-color: #1e2c39;
+  opacity: 1;
+  z-index: 2;
+  position: absolute;
+  top: 27%;
+  left: 29%;
+  border: 7px solid #4082bc;
+  border-radius: 40px;
+  text-align: center;
+  padding: 10px 0 0 0;
+
+  & label {
+    font-size: 21px;
+    color: #fff;
+  }
+}
+
+.input {
+  width: 79%;
+  display: block;
+  margin: 6px 0 0 69px;
+  height: 45px;
+  background-color: inherit;
+  color: #fff;
+  font-size: 19px;
+  border: 3px solid #4082bc;
+  padding: 0 19px 0 19px;
+  box-sizing: border-box;
+  border-radius: 15px;
+}
+
+.inputError {
+  border: 3px solid red;
+}
+
+.textarea {
+  @extend .input;
+  resize: none;
+  height: 135px;
+}
