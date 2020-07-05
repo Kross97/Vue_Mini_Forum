@@ -1,7 +1,7 @@
 .container {
   display: block;
   width: 49.5%;
-  height: 730px;
+  height: 860px;
   float: left;
 }
 
@@ -30,6 +30,11 @@
 & button:hover {
   background-color: #1861a2;
   cursor: pointer;
+ }
+
+ & .btnDisabled, & .btnDisabled:hover {
+   background-color: #c6c6c6;
+   cursor: auto;
  }
 
   & input {

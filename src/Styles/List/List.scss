@@ -1,5 +1,8 @@
 .container {
+  display: block;
   width: 49.5%;
-  height: 865px;
+  height: 860px;
   float: left;
+  max-height: 820px;
+  overflow: auto;
 }

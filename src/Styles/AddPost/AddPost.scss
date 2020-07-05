@@ -11,18 +11,18 @@
 }
 
 .formAdd {
-  width: 655px;
-  height: 370px;
+  width: 740px;
+  height: 450px;
   background-color: #1e2c39;
   opacity: 1;
   z-index: 2;
   position: absolute;
-  top: 27%;
-  left: 29%;
+  top: 17%;
+  left: 23%;
   border: 7px solid #4082bc;
   border-radius: 40px;
   text-align: center;
-  padding: 10px 0 0 0;
+  padding: 10px 0 0;
 
   & label {
     font-size: 21px;
@@ -31,7 +31,7 @@
 }
 
 .input {
-  width: 79%;
+  width: 85%;
   display: block;
   margin: 6px 0 0 69px;
   height: 45px;
@@ -52,4 +52,28 @@
   @extend .input;
   resize: none;
   height: 135px;
+}
+
+.btnAdd {
+  width: 25%;
+  height: 52px;
+  font-size: 18px;
+  color: #fff;
+  background-color: inherit;
+  border: 3px solid #4082bc;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #6c9eca;
+  }
+}
+
+.btnDisabled {
+  background-color: #89c3f7;
+  cursor: alias;
+}
+
+.btnReset {
+  @extend .btnAdd;
+  margin: 8px 30px 0 10px;
 }

@@ -28,8 +28,8 @@ export const AddPost = {
        <textarea class=${add.textarea} v-bind:class="{ '${add.inputError}': errorValidForm.inputText }" type="text" v-model="text" placeholder="введите текст"></textarea>
        <p v-bind:style="{ color: 'red', margin: 0, 'font-size': '15px'}" v-show="errorValidForm.inputText">Текст некоректен!</p>
     </label>
-     <button type="reset">Сбросить</button>
-     <button type="submit">Добавить</button>
+     <button class=${add.btnReset} type="reset">Сбросить</button>
+     <button class=${add.btnAdd} v-bind:disabled="btnDisabled" v-bind:class="{ '${add.btnDisabled}': btnDisabled }" type="submit">Добавить</button>
    </form>
   </div>
   `,
@@ -42,6 +42,7 @@ export const AddPost = {
       inputThema: false,
       inputText: false,
     },
+    btnDisabled: true,
   }),
   methods: {
     resetForm() {
@@ -61,32 +62,38 @@ export const AddPost = {
         text: this.text,
         comments: [],
       };
-      console.log('Отправленный пост', post);
       this.$store.dispatch('addPost', post);
       this.resetForm();
       this.toggle();
     },
   },
   watch: {
+    errorValidForm(valid) {
+      if (this.userName !== '' && this.thema !== '' && this.text !== '' && !Object.values(valid).includes(true)) {
+        this.btnDisabled = false;
+      } else {
+        this.btnDisabled = true;
+      }
+    },
     userName(val) {
       if (val === '' || val.length > 11) {
-        this.errorValidForm.inputName = true;
+        this.errorValidForm = { ...this.errorValidForm, inputName: true };
       } else {
-        this.errorValidForm.inputName = false;
+        this.errorValidForm = { ...this.errorValidForm, inputName: false };
       }
     },
     thema(val) {
       if (val === '' || val.length > 17) {
-        this.errorValidForm.inputThema = true;
+        this.errorValidForm = { ...this.errorValidForm, inputThema: true };
       } else {
-        this.errorValidForm.inputThema = false;
+        this.errorValidForm = { ...this.errorValidForm, inputThema: false };
       }
     },
     text(val) {
       if (val === '') {
-        this.errorValidForm.inputText = true;
+        this.errorValidForm = { ...this.errorValidForm, inputText: true };
       } else {
-        this.errorValidForm.inputText = false;
+        this.errorValidForm = { ...this.errorValidForm, inputText: false };
       }
     },
   },

@@ -12,7 +12,6 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/',
     filename: '[name].js',
   },
   devServer: {
@@ -74,7 +73,7 @@ module.exports = {
     ],
   },
   plugins: [
-    new MiniCssExtractPlugin({ filename: 'css/[name].css' }),
+    new MiniCssExtractPlugin({ filename: './css/[name].css' }),
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),

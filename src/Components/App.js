@@ -8,9 +8,6 @@ import { store } from '../Store/StoreApp';
 export const App = {
   name: 'AppComponent',
   store,
-  data: () => ({
-    isShowFormAddPost: false,
-  }),
   template: `
   <div class=${app.container}>
       <header-app :toggle="changeStateShowForm">
@@ -22,6 +19,11 @@ export const App = {
         v-if="isShowFormAddPost">
       </add-post>
   </div>`,
+  data() {
+    return {
+      isShowFormAddPost: false,
+    };
+  },
   components: {
     'header-app': Header,
     'list-posts': ListPost,

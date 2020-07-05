@@ -1,6 +1,7 @@
 .container {
   width: 100%;
   background-color: inherit;
+  position: relative;
 
   & button {
     width: 15%;
@@ -16,4 +17,15 @@
   & button:hover {
     background-color: #4da6f4;
   }
+}
+
+.logo {
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  top: 11px;
+  left: 49%;
+  background-image: url('../../public/img/vue.png');
+  background-repeat: no-repeat;
+  background-size: contain;
 }

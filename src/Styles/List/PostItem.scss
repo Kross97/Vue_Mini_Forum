@@ -1,11 +1,17 @@
 .container {
   width: 90%;
   background-color: #4082bc;
-  margin: 35px 10px 0 5px;
-  border: 5px solid #fff;
-  border-radius: 9px;
+  margin: 36px 10px 0 5px;
+  border: 7px solid #fff;
+  border-radius: 18px;
   font-size: 45px;
   color: #fff;
+  position: relative;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #255b8a;
+  }
 
   & article {
     display: flex;
@@ -16,6 +22,21 @@
   & p:nth-of-type(2) {
     margin: 0;
   }
+
+  & .btnRemove {
+    width: 20px;
+    height: 21px;
+    position: absolute;
+    top: 9px;
+    right: 13px;
+    background-image: url('../../public/img/close.png');
+    background-repeat: no-repeat;
+    padding: 0;
+    background-size: contain;
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+  }
 }
 
 .text {
@@ -24,4 +45,20 @@
   width: 91%;
   word-break: break-all;
   height: 120px;
+}
+
+.btnAddComment {
+  width: 32%;
+  height: 48px;
+  margin: 0 0 30px 35px;
+  background-color: #1861a2;
+  font-size: 18px;
+  color: inherit;
+  border: 3px solid #fff;
+  border-radius: 16px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #05347e;
+  }
 }
