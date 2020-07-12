@@ -1,12 +1,17 @@
-import comment from '../../Styles/List/Comments.scss';
+import { VCard, VCardTitle, VCardText } from 'vuetify/lib';
+import comment from '../../Styles/List/Comments.sass';
 
 export const CommentItem = {
   props: ['idComm', 'commentsIds', 'postId'],
-  template: `<div v-on:click.stop="setCommentOnEdit" class=${comment.container}>
-   <span>{{ commentUser.name }}</span>
-   <span>{{ commentUser.text }}</span>
+  template: `<v-card
+    :loading="editProcess"
+    v-on:click.stop="setCommentOnEdit"
+    class=${comment.container}
+    >
+   <v-card-title>{{ commentUser.name }}</v-card-title>
+   <v-card-text>{{ commentUser.text }}</v-card-text>
    <button @click.stop="removeComment(commentUser)" type="button"></button>
-  </div>`,
+  </v-card>`,
   methods: {
     removeComment(dataComment) {
       const removeCommentInList = {
@@ -21,6 +26,10 @@ export const CommentItem = {
       this.$store.commit('removeUser', dataComment.userId);
     },
     setCommentOnEdit() {
+      if (this.$router.currentRoute.path !== '/comment') {
+        this.$router.replace('/comment');
+      }
+      this.$store.commit('setPostOnEdit', 0);
       this.$store.commit('setCommentOnEdit', this.idComm);
     },
   },
@@ -34,5 +43,14 @@ export const CommentItem = {
         text: currentComment.text,
       };
     },
+    editProcess() {
+      const idEditing = this.$store.state.comments.idCommentOnEdit;
+      return idEditing === this.idComm ? 'error' : false;
+    },
+  },
+  components: {
+    'v-card': VCard,
+    'v-card-title': VCardTitle,
+    'v-card-text': VCardText,
   },
 };

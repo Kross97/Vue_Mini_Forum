@@ -1,18 +1,48 @@
-import forms from '../../Styles/Forms/Forms.scss';
+import {
+  VTextField,
+  VTextarea,
+  VBtn,
+  VForm,
+} from 'vuetify/lib';
+import forms from '../../Styles/Forms/Forms.sass';
 
 export const FormEditComment = {
   name: 'FormsEditComment',
   props: ['comment'],
-  template: `<form class=${forms.formItem} @submit.prevent="changeDataComment">
-   <p>Форма редактирования комментария</p>
-   <label>Имя пользователя:
-     <input type="text" :disabled="commentData.disabledInput" v-model="commentData.userName" />
-   </label>
-   <label>Текст комментария:
-     <input type="text" :disabled="commentData.disabledInput" v-model="commentData.text" />
-   </label>
-   <button :class="{'${forms.btnDisabled}': commentData.disabledInput }" :disabled="commentData.disabledInput" type="submit">Изменить</button>
-  </form>`,
+  template: `<v-form
+      v-model="valid"
+      class=${forms.formItem}
+      @submit.prevent="changeDataComment"
+    >
+   <p>{{ $vuetify.lang.t('$vuetify.formEdit.titleComment') }}</p>
+     <v-text-field
+        :rules="nameRules"
+        clearable
+        :label="$vuetify.lang.t('$vuetify.formAdd.labelName')"
+        :disabled="commentData.disabledInput"
+        v-model="commentData.userName">
+     </v-text-field>
+     <v-textarea
+        height="65px"
+        clearable
+        :style="{ 'margin-top': '55px' }"
+        :rules="textRules"
+        counter="11"
+        :label="$vuetify.lang.t('$vuetify.formAdd.labelComment')"
+        :disabled="commentData.disabledInput"
+        no-resize
+        v-model="commentData.text"
+      >
+      </v-textarea>
+
+   <v-btn
+    :class="{'${forms.btnDisabled}': commentData.disabledInput }"
+    :disabled="!valid"
+    type="submit"
+    >
+      {{ $vuetify.lang.t('$vuetify.formEdit.button') }}
+    </v-btn>
+  </v-form>`,
   methods: {
     changeDataComment() {
       const commentUpdate = {
@@ -35,7 +65,21 @@ export const FormEditComment = {
   },
   data() {
     return {
+      valid: false,
       commentData: this.comment,
+      nameRules: [
+        (v) => (v !== '' && v != null) || 'Имя должно быть заполненно!',
+        (v) => (v != null && v.length <= 11) || 'Имя не должно быть длиннее 11 символов',
+      ],
+      textRules: [
+        (v) => (v !== '' && v != null) || 'Текст должен быть заполнен!',
+      ],
     };
+  },
+  components: {
+    'v-text-field': VTextField,
+    'v-textarea': VTextarea,
+    'v-btn': VBtn,
+    'v-form': VForm,
   },
 };

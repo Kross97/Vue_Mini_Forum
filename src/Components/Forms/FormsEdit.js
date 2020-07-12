@@ -1,4 +1,4 @@
-import forms from '../../Styles/Forms/Forms.scss';
+import forms from '../../Styles/Forms/Forms.sass';
 import { FormEditPost } from './FormEditPost';
 import { FormEditComment } from './FormEditComment';
 
@@ -6,8 +6,12 @@ export const FormsEdit = {
   name: 'AllFormsEdit',
   template: `
   <div class=${forms.container}>
-    <form-post :key="postOnEdit.postId + 'post'" :post="postOnEdit"></form-post>
-    <form-comment :key="commentOnEdit.commId + 'comm'" :comment="commentOnEdit"></form-comment>
+    <router-view
+      :key="postOnEdit.postId + commentOnEdit.commId"
+      :comment="commentOnEdit"
+      :post="postOnEdit"
+    >
+   </router-view>
  </div>`,
   computed: {
     postOnEdit() {
@@ -21,7 +25,6 @@ export const FormsEdit = {
           userName: userOnChange.name,
           thema: postOnChange.thema,
           text: postOnChange.text,
-          disabledInput: false,
         };
       }
       return {
@@ -30,7 +33,6 @@ export const FormsEdit = {
         userName: '',
         thema: '',
         text: '',
-        disabledInput: true,
       };
     },
     commentOnEdit() {

@@ -1,23 +1,58 @@
-import post from '../../Styles/List/PostItem.scss';
-import { FormComment } from './FormComment';
+import {
+  VCard,
+  VCardTitle,
+  VCardText,
+  VCardActions,
+  VBtn,
+  VIcon,
+} from 'vuetify/lib';
+import post from '../../Styles/List/PostItem.sass';
+import FormComment from './FormComment.vue';
 import { CommentItem } from './CommentItem';
 
 export const PostItem = {
   props: { post: Object },
-  template: `<div @click="setPostOnEdit" class=${post.container}>
-  <article>
+  template: `<v-card
+    @click="setPostOnEdit"
+    :loading="editProcess"
+    class=${post.container}
+  >
+  <v-card-title class=${post.title}>
     <span>{{ userName }}</span>
     <span>{{ post.thema }}</span>
-  </article>
-   <p class=${post.text}>{{ post.text }}</p>
-   <button class=${post.btnRemove} @click.stop="removePost" type="button"></button>
-   <button class=${post.btnAddComment} @click.stop="showFormComment" type="button">Добавить комментарий</button>
-   <button v-show="allCommentsIds.length !== 0" @click.stop="showListComments" class=${post.btnAddComment} type="button">Посмотреть комментарии</button>
+  </v-card-title>
+   <v-card-text class=${post.text}>
+    {{ post.text }}
+  </v-card-text>
+  <v-card-actions>
+    <v-btn
+    fab
+    class=${post.btnRemove}
+    @click.stop="removePost">
+      <v-icon width="25px" dark>mdi-minus</v-icon>
+  </v-btn>
+    <v-btn
+      class=${post.btnAddComment}
+      @click.stop="showFormComment"
+      width="34%""
+      height="48px"
+    >
+    {{ $vuetify.lang.t('$vuetify.dataComment.addComment') }}</v-btn>
+    <v-btn
+      v-show="allCommentsIds.length !== 0"
+      @click.stop="showListComments"
+      width="34%""
+      height="48px"
+      class=${post.btnAddComment}
+      >
+        {{ $vuetify.lang.t('$vuetify.dataComment.showComment') }}
+    </v-btn>
+  </v-card-actions>
    <form-comment v-if="isShowFormComment" :showFormComment="showFormComment" :postId="post.id" :commentsIds="post.comments"></form-comment>
     <div v-if="isShowListComments">
       <comment-item v-for="idComm of allCommentsIds" :key="idComm" :postId="post.id" :commentsIds="post.comments" :idComm="idComm"></comment-item>
     </div>
-  </div>`,
+  </v-card>`,
   data() {
     return {
       isShowFormComment: false,
@@ -30,6 +65,10 @@ export const PostItem = {
       this.isShowListComments = !this.isShowListComments;
     },
     setPostOnEdit() {
+      if (this.$router.currentRoute.path !== '/post') {
+        this.$router.replace('/post');
+      }
+      this.$store.commit('setCommentOnEdit', 0);
       this.$store.commit('setPostOnEdit', this.post.id);
     },
     removePost() {
@@ -42,6 +81,10 @@ export const PostItem = {
     },
   },
   computed: {
+    editProcess() {
+      const idEditing = this.$store.state.posts.idPostEdit;
+      return idEditing === this.post.id ? 'error' : false;
+    },
     userName() {
       this.user = this.$store.state.users.entities[this.post.user];
       return this.user.name;
@@ -50,8 +93,16 @@ export const PostItem = {
       return this.$store.state.posts.entities[this.post.id].comments;
     },
   },
+  watch: {
+  },
   components: {
     'form-comment': FormComment,
     'comment-item': CommentItem,
+    'v-card': VCard,
+    'v-card-title': VCardTitle,
+    'v-card-text': VCardText,
+    'v-card-actions': VCardActions,
+    'v-btn': VBtn,
+    'v-icon': VIcon,
   },
 };

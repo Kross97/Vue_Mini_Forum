@@ -1,0 +1,22 @@
+.container
+  height: 936px
+  position: relative
+  background-color: #17212b
+
+@keyframes alertBlock
+  from
+    top: -81px
+
+  50%
+      top: 120px
+
+  to
+      top: 85px
+
+
+.alert
+  position: absolute
+  animation-name: alertBlock
+  animation-duration: 1.5s
+  left: 40%
+  z-index: 3

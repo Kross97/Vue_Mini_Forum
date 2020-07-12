@@ -1,10 +1,13 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
-const autoprefixer = require('autoprefixer');
-const cssnano = require('cssnano');
-// const VueLoaderPlugin = require('vue-loader/lib/plugin');
+// const autoprefixer = require('autoprefixer');
+// const cssnano = require('cssnano');
+const sass = require('sass');
+const fibers = require('fibers');
+const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 // const CopyWebpackPlugin = require('copy-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   entry: {
@@ -12,12 +15,16 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
+    publicPath: './',
     filename: '[name].js',
   },
   devServer: {
     contentBase: path.join(__dirname, 'src'),
+    publicPath: '/',
     stats: 'errors-only',
     port: 7777,
+    hot: true,
+    // host: '192.168.0.109',
   },
   resolve: {
     alias: {
@@ -30,7 +37,6 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: ['vue-loader'],
-        exclude: /node_modules/,
       },
       {
         test: /\.js$/,
@@ -39,33 +45,27 @@ module.exports = {
       },
       {
         test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
-        loader: 'file-loader?name=assets/[name].[hash].[ext]',
+        loader: 'file-loader?name=assests/[name].[ext]',
       },
       {
-        test: /\.scss$/,
+        test: /\.s(c|a)ss$/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-          },
+          'vue-style-loader',
           {
             loader: 'css-loader',
             options: {
               modules: true,
+              import: false,
             },
           },
           {
             loader: 'sass-loader',
-          },
-          {
-            loader: 'postcss-loader',
             options: {
-              plugins: [
-                autoprefixer({
-                  overrideBrowserslist: ['ie >= 8', 'last 4 version'],
-                }),
-                cssnano,
-              ],
-              sourceMap: true,
+              implementation: sass,
+              sassOptions: {
+                fiber: fibers,
+                indentedSyntax: true,
+              },
             },
           },
         ],
@@ -73,11 +73,12 @@ module.exports = {
     ],
   },
   plugins: [
-    new MiniCssExtractPlugin({ filename: './css/[name].css' }),
+    // new MiniCssExtractPlugin({ filename: 'css/[name].css' }),
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
-    // new VueLoaderPlugin(),
+    new VueLoaderPlugin(),
+    new VuetifyLoaderPlugin(),
     // new CopyWebpackPlugin([{ from: 'src/public/', to: 'public/' }]),
   ],
 };

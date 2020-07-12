@@ -1,54 +1,110 @@
+import {
+  VTextField,
+  VTextarea,
+  VBtn,
+  VForm,
+} from 'vuetify/lib';
 import now from 'lodash/now';
-import add from '../../Styles/AddPost/AddPost.scss';
+import add from '../../Styles/AddPost/AddPost.sass';
 
 export const AddPost = {
-  props: { toggle: Function },
+  props: { toggle: Function, toggleAlert: Function },
   template: `
   <div>
    <div @click="toggle" class=${add.background}></div>
-   <form v-on:reset="resetForm"  v-on:submit="addNewPost" class=${add.formAdd}>
-     <label>
-       Имя пользователя:
-       <input
-       class=${add.input}
-       v-bind:class="{ '${add.inputError}': errorValidForm.inputName }"
-       type="text"
-       v-model="userName"
-       placeholder="введите имя пользователя"
-       />
-       <p v-bind:style="{ color: 'red', margin: 0, 'font-size': '15px'}" v-show="errorValidForm.inputName">Имя некоректно!</p>
-     </label>
-     <label>
-       Название темы:
-       <input class=${add.input} v-bind:class="{ '${add.inputError}': errorValidForm.inputThema }" type="text" v-model="thema" placeholder="введите название темы" />
-       <p v-bind:style="{ color: 'red', margin: 0, 'font-size': '15px'}" v-show="errorValidForm.inputThema">Тема некоректна!</p>
-     </label>
-     <label>
-       Текст:
-       <textarea class=${add.textarea} v-bind:class="{ '${add.inputError}': errorValidForm.inputText }" type="text" v-model="text" placeholder="введите текст"></textarea>
-       <p v-bind:style="{ color: 'red', margin: 0, 'font-size': '15px'}" v-show="errorValidForm.inputText">Текст некоректен!</p>
-    </label>
-     <button class=${add.btnReset} type="reset">Сбросить</button>
-     <button class=${add.btnAdd} v-bind:disabled="btnDisabled" v-bind:class="{ '${add.btnDisabled}': btnDisabled }" type="submit">Добавить</button>
-   </form>
+   <v-form
+    v-model="valid"
+    v-on:submit="addNewPost"
+    class=${add.formAdd}
+    :class="formThema"
+   >
+       <v-text-field
+            :label="$vuetify.lang.t('$vuetify.formAdd.labelName')"
+            clearable
+            v-model="userName"
+            required
+            :counter="11"
+            :rules="nameRules"
+          >
+          </v-text-field>
+       <v-text-field
+            v-model="thema"
+            :label="$vuetify.lang.t('$vuetify.formAdd.labelThema')"
+            required
+            clearable
+            :counter="16"
+            :rules="themaRules"
+          >
+          </v-text-field>
+       <v-textarea
+          outlined
+          clearable
+          no-resize
+          v-model="text"
+          :rules="textRules"
+          :label="$vuetify.lang.t('$vuetify.formAdd.labelText')"
+        >
+        </v-textarea>
+    <v-btn
+      height="52px"
+      width="25%"
+      type="reset"
+      class=${add.btnReset}
+      @click="resetBtn"
+      :loading="loadingReset"
+    >
+    <template v-slot:loader>
+        <span>Reset...</span>
+    </template>
+      {{ $vuetify.lang.t('$vuetify.formAdd.btnRest') }}
+    </v-btn>
+    <v-btn
+      height="52px"
+      width="25%"
+      type="submit"
+      :disabled="!valid"
+      class=${add.btnAdd}
+    >
+      {{ $vuetify.lang.t('$vuetify.formAdd.btnAdd') }}
+    </v-btn>
+   </v-form>
   </div>
   `,
   data: () => ({
     userName: '',
     thema: '',
     text: '',
-    errorValidForm: {
-      inputName: false,
-      inputThema: false,
-      inputText: false,
-    },
-    btnDisabled: true,
+    valid: true,
+    loadingReset: false,
+    nameRules: [
+      (v) => (v !== '' && v != null) || 'Имя должно быть заполненно!',
+      (v) => (v != null && v.length <= 11) || 'Имя не должно быть длиннее 11 символов',
+    ],
+    themaRules: [
+      (v) => (v !== '' && v != null) || 'Тема должна быть заполненна!',
+      (v) => (v != null && v.length <= 16) || 'Тема не должна быть длиннее 16 символов',
+    ],
+    textRules: [
+      (v) => (v !== '' && v != null) || 'Текст должен быть заполнен!',
+    ],
   }),
+  computed: {
+    formThema() {
+      const thema = this.$vuetify.theme.isDark;
+      return thema ? add.formDark : add.formLight;
+    },
+  },
+  components: {
+    'v-text-field': VTextField,
+    'v-textarea': VTextarea,
+    'v-btn': VBtn,
+    'v-form': VForm,
+  },
   methods: {
-    resetForm() {
-      this.userName = '';
-      this.thema = '';
-      this.text = '';
+    resetBtn() {
+      this.loadingReset = true;
+      const context = this;
+      setTimeout(() => context.loadingReset = false, 700);
     },
     addNewPost(e) {
       e.preventDefault();
@@ -63,38 +119,8 @@ export const AddPost = {
         comments: [],
       };
       this.$store.dispatch('addPost', post);
-      this.resetForm();
       this.toggle();
-    },
-  },
-  watch: {
-    errorValidForm(valid) {
-      if (this.userName !== '' && this.thema !== '' && this.text !== '' && !Object.values(valid).includes(true)) {
-        this.btnDisabled = false;
-      } else {
-        this.btnDisabled = true;
-      }
-    },
-    userName(val) {
-      if (val === '' || val.length > 11) {
-        this.errorValidForm = { ...this.errorValidForm, inputName: true };
-      } else {
-        this.errorValidForm = { ...this.errorValidForm, inputName: false };
-      }
-    },
-    thema(val) {
-      if (val === '' || val.length > 17) {
-        this.errorValidForm = { ...this.errorValidForm, inputThema: true };
-      } else {
-        this.errorValidForm = { ...this.errorValidForm, inputThema: false };
-      }
-    },
-    text(val) {
-      if (val === '') {
-        this.errorValidForm = { ...this.errorValidForm, inputText: true };
-      } else {
-        this.errorValidForm = { ...this.errorValidForm, inputText: false };
-      }
+      this.toggleAlert();
     },
   },
 };

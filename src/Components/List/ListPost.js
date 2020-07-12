@@ -1,4 +1,4 @@
-import list from '../../Styles/List/List.scss';
+import list from '../../Styles/List/List.sass';
 import { PostItem } from './PostItem';
 
 export const ListPost = {

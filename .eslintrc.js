@@ -11,6 +11,7 @@ module.exports = {
   extends: [
     'airbnb/base',
     'plugin:vue/vue3-recommended',
+    'plugin:vue/essential',
   ],
   rules: {
     "no-new": 0,
