@@ -4,6 +4,7 @@ import {
   VBtn,
   VForm,
 } from 'vuetify/lib';
+import { mapActions } from 'vuex';
 import forms from '../../Styles/Forms/Forms.sass';
 
 export const FormEditComment = {
@@ -44,6 +45,7 @@ export const FormEditComment = {
     </v-btn>
   </v-form>`,
   methods: {
+    ...mapActions(['updateComment']),
     changeDataComment() {
       const commentUpdate = {
         commId: this.comment.commId,
@@ -57,9 +59,7 @@ export const FormEditComment = {
           name: this.commentData.userName,
         },
       };
-      this.$store.commit('setCommentOnEdit', 0);
-      this.$store.commit('changeDataComment', commentUpdate);
-      this.$store.commit('changeDataUser', userUpdate);
+      this.updateComment({ commentUpdate, userUpdate });
       this.commentData = { userName: '', text: '', disabledInput: true };
     },
   },

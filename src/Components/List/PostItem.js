@@ -6,6 +6,7 @@ import {
   VBtn,
   VIcon,
 } from 'vuetify/lib';
+import { mapActions } from 'vuex';
 import post from '../../Styles/List/PostItem.sass';
 import FormComment from './FormComment.vue';
 import { CommentItem } from './CommentItem';
@@ -34,14 +35,15 @@ export const PostItem = {
     <v-btn
       class=${post.btnAddComment}
       @click.stop="showFormComment"
-      width="34%""
+      width="34%"
       height="48px"
     >
-    {{ $vuetify.lang.t('$vuetify.dataComment.addComment') }}</v-btn>
+    {{ $vuetify.lang.t('$vuetify.dataComment.addComment') }}
+    </v-btn>
     <v-btn
       v-show="allCommentsIds.length !== 0"
       @click.stop="showListComments"
-      width="34%""
+      width="34%"
       height="48px"
       class=${post.btnAddComment}
       >
@@ -60,6 +62,7 @@ export const PostItem = {
     };
   },
   methods: {
+    ...mapActions(['loadingPosts']),
     showListComments() {
       this.isShowFormComment = false;
       this.isShowListComments = !this.isShowListComments;
@@ -94,6 +97,11 @@ export const PostItem = {
     },
   },
   watch: {
+    allCommentsIds(ids, oldIds) {
+      if (ids.length > oldIds.length) {
+        this.loadingPosts();
+      }
+    },
   },
   components: {
     'form-comment': FormComment,

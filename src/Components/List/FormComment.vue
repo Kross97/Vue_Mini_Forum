@@ -41,7 +41,7 @@ import {
   VForm,
 } from 'vuetify/lib';
 import now from 'lodash/now';
-import comm from '../../Styles/List/Comments.sass';
+import { mapActions } from 'vuex';
 
 export default {
   props: ['showFormComment', 'commentsIds', 'postId'],
@@ -60,15 +60,18 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['loadingPosts']),
     addNewComment() {
       const comment = {
         id: now(),
+        postId: this.postId,
         user: {
           id: now(),
           name: this.userName,
         },
         text: this.text,
       };
+      this.loadingPosts();
       this.$store.dispatch('addNewComment', comment);
       this.$store.commit('changeDataPost', { postId: this.postId, changes: { comments: [...this.commentsIds, comment.id] } });
       this.userName = '';

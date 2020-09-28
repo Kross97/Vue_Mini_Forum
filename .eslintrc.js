@@ -23,5 +23,6 @@ module.exports = {
     "import/no-cycle": 0,
     "no-case-declarations": 0,
     "import/no-named-as-default-member": 0,
+    "no-unused-expressions": 0
   },
 };

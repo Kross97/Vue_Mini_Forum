@@ -4,6 +4,7 @@ import {
   VBtn,
   VForm,
 } from 'vuetify/lib';
+import { mapActions } from 'vuex';
 import forms from '../../Styles/Forms/Forms.sass';
 
 export const FormEditPost = {
@@ -84,6 +85,7 @@ export const FormEditPost = {
     };
   },
   methods: {
+    ...mapActions(['updatepost']),
     resetBtn() {
       this.postData.text = '';
       this.postData.thema = '';
@@ -106,9 +108,7 @@ export const FormEditPost = {
           name: this.postData.userName,
         },
       };
-      this.$store.commit('setPostOnEdit', 0);
-      this.$store.commit('changeDataPost', updatePost);
-      this.$store.commit('changeDataUser', updateUser);
+      this.updatepost({ updatePost, updateUser });
       this.$router.replace('/');
       this.postData = {
         userName: '',

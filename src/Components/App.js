@@ -1,4 +1,5 @@
 import { VApp, VThemeProvider, VAlert } from 'vuetify/lib';
+import { mapActions } from 'vuex';
 import { Header } from './Header/Header';
 import { AddPost } from './Header/AddPost';
 import { ListPost } from './List/ListPost';
@@ -54,6 +55,7 @@ export const App = {
     'v-alert': VAlert,
   },
   methods: {
+    ...mapActions(['loadingPosts']),
     changeStateShowAlert() {
       this.isShowAlert = true;
       setTimeout(() => this.isShowAlert = false, 3400);
@@ -66,5 +68,8 @@ export const App = {
     if (this.$router.currentRoute.path !== '/') {
       this.$router.replace('/');
     }
+  },
+  mounted() {
+    this.loadingPosts();
   },
 };

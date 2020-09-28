@@ -2,6 +2,8 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
 import { normalize, schema } from 'normalizr';
+import { getPosts, addPost, deletePost, updatePost } from '../../api/posts';
+import { addComment, deleteComment, updateComment } from '../../api/comments';
 
 Vue.use(Vuex);
 
@@ -37,6 +39,10 @@ const posts = {
     changeDataPost(state, update) {
       state.entities[update.postId] = { ...state.entities[update.postId], ...update.changes };
     },
+    loadingPosts(state, { posts, ids }) {
+      state.entities = posts;
+      state.ids = ids;
+    },
   },
   getters: {
     allPosts: (state) => (
@@ -44,18 +50,37 @@ const posts = {
     ),
   },
   actions: {
-    addPost: (context, post) => {
+    async updatepost(context, dataPost) {
+      const message = await updatePost('/updatepost', dataPost);
+      console.log('Update post: ', message);
+      context.commit('setPostOnEdit', 0);
+      context.commit('changeDataPost', dataPost.updatePost);
+      context.commit('changeDataUser', dataPost.updateUser);
+    },
+    async addPost(context, post) {
+      const message = await addPost('/addpost', post);
+      console.log('Add post: ', message);
       const data = normalize(post, postSchema);
       context.commit('addPost', data.entities.posts[post.id]);
       context.commit('addUser', data.entities.users[post.user.id]);
     },
-    deletePost: (context, dataRemove) => {
+    async deletePost(context, dataRemove) {
+      const message = await deletePost(`/deletepost/${dataRemove.postId}`);
+      console.log('Delete post: ', message);
       context.commit('removePost', dataRemove.postId);
       context.commit('removeUser', dataRemove.userId);
     },
+    async loadingPosts(context) {
+      const postsData = await getPosts('/posts');
+      console.log('Posts for server: ', postsData);
+      const allPosts = normalize(postsData, [postSchema]);
+      context.commit('setPostOnEdit', 0);
+      allPosts.entities.posts && context.commit('loadingPosts', { posts: allPosts.entities.posts, ids: allPosts.result });
+      allPosts.entities.users && context.commit('loadingUsers', allPosts.entities.users);
+      allPosts.entities.comments && context.commit('loadingComments', allPosts.entities.comments);
+    },
   },
 };
-
 const users = {
   state: () => ({
     ids: [],
@@ -72,6 +97,10 @@ const users = {
     },
     changeDataUser(state, update) {
       state.entities[update.userId] = { ...state.entities[update.userId], ...update.changes };
+    },
+    loadingUsers(state, allUsers) {
+      state.entities = allUsers;
+      state.ids = Object.keys(allUsers);
     },
   },
 };
@@ -97,12 +126,28 @@ const comments = {
     changeDataComment(state, update) {
       state.entities[update.commId] = { ...state.entities[update.commId], ...update.changes };
     },
+    loadingComments(state, allComments) {
+      state.entities = allComments;
+      state.ids = Object.keys(allComments);
+    },
   },
   actions: {
-    addNewComment(context, comment) {
+    async updateComment(context, commentData) {
+      const message = await updateComment('/updatecomment', commentData);
+      console.log('Update comment: ', message);
+      context.commit('setCommentOnEdit', 0);
+      context.commit('changeDataComment', commentData.commentUpdate);
+      context.commit('changeDataUser', commentData.userUpdate);
+    },
+    async addNewComment(context, comment) {
+      await addComment('/addcomment', comment);
       const data = normalize(comment, commentSchema);
       context.commit('addComment', data.entities.comments[comment.id]);
       context.commit('addUser', data.entities.users[comment.user.id]);
+    },
+    async removeComment(context, commentId) {
+      await deleteComment(`/deletecomment/${commentId}`);
+      context.commit('removeComment', commentId);
     },
   },
 };

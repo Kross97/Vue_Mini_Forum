@@ -22,7 +22,7 @@ export const CommentItem = {
       };
       this.$store.commit('setCommentOnEdit', 0);
       this.$store.commit('changeDataPost', removeCommentInList);
-      this.$store.commit('removeComment', this.idComm);
+      this.$store.dispatch('removeComment', this.idComm);
       this.$store.commit('removeUser', dataComment.userId);
     },
     setCommentOnEdit() {
