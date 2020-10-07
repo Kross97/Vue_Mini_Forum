@@ -1,6 +1,6 @@
 # Vue_Mini_Forum
 
-(Технологии: 1.Vue, 2.normalizr.js, 3.Vuex, 4.Vue-router 5.Vue-loader 6.Vuentify, 7.Node.js, 8.Express, 9.Sequelize)
+(Технологии: 1.Vue, 2.normalizr.js, 3.Vuex, 4.Vue-router 5.Vue-loader 6.Vuentify, 7.Node.js, 8.Express, 9.Sequelize, 10.Docker , 11.Docker-compose)
 
 1 шаг npm run start
 
