@@ -12,7 +12,8 @@ export const AddPost = {
   template: `
   <div>
    <div @click="toggle" class=${add.background}></div>
-   <v-form
+   <div>
+    <v-form
     v-model="valid"
     v-on:submit="addNewPost"
     class=${add.formAdd}
@@ -68,6 +69,7 @@ export const AddPost = {
       {{ $vuetify.lang.t('$vuetify.formAdd.btnAdd') }}
     </v-btn>
    </v-form>
+   </div>
   </div>
   `,
   data: () => ({

@@ -13,9 +13,20 @@ const jsonParser = bodyParser.json();
  flush privileges
  */
 
+/* получение пользователей в MySql
+  use mysql
+  select user from user
+  show grants for %username%
+*/
+
+/* получение порта в MySql
+ show variables like 'port'
+*/
+
 const sequelize = new Sequelize('forumDb2', 'nekit', '', {
   dialect: 'mysql',
-  host: 'localhost',
+  host: 'database',
+  port: 3306,
   define: {
     timestamps: false,
   },
