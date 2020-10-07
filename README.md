@@ -4,9 +4,13 @@
 
 1 шаг npm run start
 
-2 шаг npm run server (прежде нужно создать базу forumDb2, на пользователя nekit, в mySql )
+2 шаг  docker-compose up -d
 
-3 шаг переходим по ссылке http://localhost:7777/
+3 шаг  docker-compose exec database bash (настраиваем бд по инструкции из server.js)
+
+4 шаг npm run server 
+
+5 шаг переходим по ссылке http://localhost:7777/
 
 для сборки :
 ```
