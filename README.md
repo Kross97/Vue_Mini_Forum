@@ -1,4 +1,4 @@
-# Vue_Mini_Forum
+# Vue_Mini_Forum (Vue \ Node.js) третий из серии форумов (fullstack)
 
 (Технологии: 1.Vue, 2.normalizr.js, 3.Vuex, 4.Vue-router 5.Vue-loader 6.Vuentify, 7.Node.js, 8.Express, 9.Sequelize, 10.Docker , 11.Docker-compose)
 
