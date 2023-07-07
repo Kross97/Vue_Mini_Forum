@@ -77,7 +77,7 @@
     "raw-loader": "^4.0.1",
     "sass": "^1.26.9",
     "sass-loader": "^8.0.2",
-    "stylelint": "^13.0.0",
+    "stylelint": "^15.10.1",
     "vue-eslint-parser": "^7.1.0",
     "vue-loader": "^15.9.3",
     "vue-template-compiler": "^2.6.11",
