@@ -42,7 +42,7 @@
     "nodemon": "^2.0.4",
     "normalizr": "^3.6.0",
     "postcss-loader": "^3.0.0",
-    "sequelize": "^6.3.5",
+    "sequelize": "^6.29.0",
     "style-loader": "^1.2.1",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
